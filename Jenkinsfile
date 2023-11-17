@@ -15,7 +15,7 @@ pipeline{
         NEXUS_REPOSITORY = "AbdelrhmanRepo"
     	NEXUS_REPOGRP_ID    = "vprofile-grp-repo"
         NEXUS_CREDENTIAL_ID = "nexus"
-        NEXUS-GRP-REPO = "vpro-maven-group"
+        NEXUS_GRP_REPO = "vpro-maven-group"
         ARTVERSION = "${env.BUILD_ID}"
 
 
