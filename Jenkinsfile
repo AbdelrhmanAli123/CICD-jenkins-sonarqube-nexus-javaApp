@@ -44,12 +44,28 @@ pipeline{
                 sh 'mvn -s settings.xml test  '
             }
         }
-        stage('sonarqube'){
-            steps{
-                withSonarQubeEnv('sonarserver'){
-                    sh 'mvn sonar:sonar '
-                }
+        stage('CODE ANALYSIS with SONARQUBE') {
+          
+		  environment {
+             scannerHome = tool 'sonarscanner4'
+          }
+
+          steps {
+            withSonarQubeEnv('sonarserver') {
+               sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=my-project \
+                   -Dsonar.projectName=my-project \
+                   -Dsonar.projectVersion=1.0 \
+                   -Dsonar.sources=src/ \
+                   -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
+                   -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                   -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                   -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
             }
-        }  
+
+            timeout(time: 10, unit: 'MINUTES') {
+               waitForQualityGate abortPipeline: true
+            }
+          }
+        }
     }
 }
