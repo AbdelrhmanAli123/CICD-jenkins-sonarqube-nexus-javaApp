@@ -1,9 +1,9 @@
 pipeline{
     agent any
-    tools {
-        maven "MAVEN"
-        jdk "JAVA_HOME"
-    }
+    // tools {
+    //     maven "MAVEN"
+    //     jdk "JAVA_HOME"
+    // }
     environment{
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
