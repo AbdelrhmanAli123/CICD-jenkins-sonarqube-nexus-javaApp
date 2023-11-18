@@ -46,11 +46,11 @@ pipeline{
         stage('CODE ANALYSIS with SONARQUBE') {
           
 		  environment {
-             scannerHome = tool '${SONARSCCANER}'
+             scannerHome = tool 'sonarserver'
           }
 
           steps {
-            withSonarQubeEnv("${SONARSERVER}") {
+            withSonarQubeEnv("sonarserver") {
                sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=my-project \
                    -Dsonar.projectName=my-project \
                    -Dsonar.projectVersion=1.0 \
@@ -59,7 +59,7 @@ pipeline{
                    -Dsonar.junit.reportsPath=target/surefire-reports/ \
                    -Dsonar.jacoco.reportsPath=target/jacoco.exec \
                    -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml
-		   - Dsonar.host.url=http://3.80.146.132'''
+		   - Dsonar.host.url=http://3.80.146.132:9000'''
             }
 
             timeout(time: 10, unit: 'MINUTES') {
