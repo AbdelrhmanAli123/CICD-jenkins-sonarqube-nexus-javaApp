@@ -16,8 +16,6 @@ pipeline{
     	NEXUS_REPOGRP_ID    = "vprofile-grp-repo"
         NEXUS_CREDENTIAL_ID = "nexus"
         NEXUS_GRP_REPO = "vpro-maven-group"
-        SONARSERVER = 'my_sonarqube'
-        SONARSCANNER = 'my_sonarqube'
         ARTVERSION = "${env.BUILD_ID}"
 
 
@@ -27,7 +25,6 @@ pipeline{
         stage('build_stage'){
             steps{
                 sh 'mvn -s settings.xml -DskipTests install'
-
             }
             post{
 
@@ -46,32 +43,10 @@ pipeline{
                 sh 'mvn -s settings.xml test  '
             }
         }
-        // stage('SonarQube analysis using maven'){
-        //     steps{
-        //         withSonarQubeEnv('my_sonarqube'){ 
-                    
-        //             sh 'mvn sonar:sonar'
-        //         } 
+        // stage('SonarQube analysis'){
+        //     stages{
+
         //     }
         // }
-
-        stage('SonarQube analysis nativly'){
-           steps{
-            
-            withSonarQubeEnv('my_sonarqube') {
-               sh '''${SONARSCANNER}/bin/sonar-scanner -Dsonar.projectKey=sonar-project \
-                   -Dsonar.projectName=sonar-project \
-                   -Dsonar.projectVersion=1.0 \
-                   -Dsonar.sources=src/ \
-                   -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
-                   -Dsonar.junit.reportsPath=target/surefire-reports/ \
-                   -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                   -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
-            }
-
-           }
-
-
-        }
     }
 }
