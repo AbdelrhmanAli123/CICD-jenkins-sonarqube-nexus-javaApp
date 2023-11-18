@@ -50,7 +50,7 @@ pipeline{
           }
 
           steps {
-            withSonarQubeEnv("sonarqube") {
+            withSonarQubeEnv("sonarserver") {
                sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=my-project \
                    -Dsonar.projectName=my-project \
                    -Dsonar.projectVersion=1.0 \
