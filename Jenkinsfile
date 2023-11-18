@@ -44,5 +44,11 @@ pipeline{
                 sh 'mvn -s settings.xml test  '
             }
         }
+        stage('sonarqube')
+            steps{
+                withSonarQubeEnv('sonarserver'){
+                    sh 'mvn -s settings.xml sonar:sonar '
+                }
+            }
     }
 }
