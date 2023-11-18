@@ -17,9 +17,8 @@ pipeline{
         NEXUS_CREDENTIAL_ID = "nexus"
         NEXUS_GRP_REPO = "vpro-maven-group"
         ARTVERSION = "${env.BUILD_ID}"
-        SONARSCCANER = "scanrr"
-
-
+        SONARSCCANER = "sonarserver"
+	SONARSERVER = "sonarserver"
 
     }
     stages{
@@ -47,11 +46,11 @@ pipeline{
         stage('CODE ANALYSIS with SONARQUBE') {
           
 		  environment {
-             scannerHome = tool 'sonarserver'
+             scannerHome = tool '${SONARSCCANER}'
           }
 
           steps {
-            withSonarQubeEnv('sonarserver') {
+            withSonarQubeEnv("${SONARSERVER}") {
                sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=my-project \
                    -Dsonar.projectName=my-project \
                    -Dsonar.projectVersion=1.0 \
