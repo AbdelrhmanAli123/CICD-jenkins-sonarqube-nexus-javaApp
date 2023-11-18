@@ -35,7 +35,7 @@ pipeline{
                     archiveArtifacts artifacts: '**/*.war' 
                 }
                 failure{
-                    echo "there's problem in build stage"
+                    echo "there's a problem in build stage"
                 }
             }
         }
