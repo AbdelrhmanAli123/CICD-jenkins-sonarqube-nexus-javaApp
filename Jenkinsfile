@@ -53,7 +53,7 @@ pipeline{
 		      -D sonar.password=admin \
 		      -D sonar.projectKey=sonarqubetest \
 		      -D sonar.exclusions=vendor/**,resources/**,**/*.java \
-		      -D sonar.host.url=http://3.80.146.132
+		      -D sonar.host.url="3.80.146.132"
 		 
           
     	     }
