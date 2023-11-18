@@ -46,13 +46,13 @@ pipeline{
         }
         stage('SonarQube analysis using maven'){
             steps{
-                withSonarQubeEnv('sonar'){ 
+                withSonarQubeEnv('my_sonarqube'){ 
                     
                     sh 'mvn sonar:sonar'
                 } 
             }
         }
-        
+
         // stage('SonarQube analysis nativly'){
         //     withSonarQubeEnv('sonar') {
         //        sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
