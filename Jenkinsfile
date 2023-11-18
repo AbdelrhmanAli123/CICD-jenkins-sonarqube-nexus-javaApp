@@ -56,6 +56,8 @@ pipeline{
         // }
 
         stage('SonarQube analysis nativly'){
+           steps{
+            
             withSonarQubeEnv('my_sonarqube') {
                sh '''${SONARSCANNER}/bin/sonar-scanner -Dsonar.projectKey=sonar-project \
                    -Dsonar.projectName=sonar-project \
@@ -67,6 +69,7 @@ pipeline{
                    -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
             }
 
+           }
 
 
         }
