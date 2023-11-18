@@ -43,6 +43,18 @@ pipeline{
                 sh 'mvn -s settings.xml test  '
             }
         }
+	stage('CODE ANALYSIS with SONARQUBE') {
+		steps{	
+			script{
+				
+		withSonarQubeEnv(credentialsId: 'sonar-tokan') {
+				sh 'mvn  -s settings.xml sonar:sonar'
+			}
+		     } 
+			
+		}
+	}
+    //                  ----------Other way to use sonarqube-------------
     //     stage('CODE ANALYSIS with SONARQUBE') {
           
 		  // environment {
@@ -68,16 +80,33 @@ pipeline{
      //      }
      //    }
 	    
-	stage('CODE ANALYSIS with SONARQUBE') {
-		steps{	
-			script{
-				
-		withSonarQubeEnv(credentialsId: 'sonar-tokan') {
-				sh 'mvn  -s settings.xml sonar:sonar'
-			}
-		     } 
-			
-		}
-	}
+	// stage("Quality Gate") {
+ //            steps {
+ //                timeout(time: 1, unit: 'HOURS') {
+ //                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+ //                    // true = set pipeline to UNSTABLE, false = don't
+ //                    waitForQualityGate abortPipeline: true
+ //                }
+ //            }
+ //        }   
+	stage("Upload Artifact to Nexus"){
+            steps{
+                nexusArtifactUploader(
+                  nexusVersion: 'nexus3',
+                  protocol: 'http',
+                  nexusUrl: "${NEXUSIP}:${NEXUSPORT}",
+                  groupId: 'QA',
+                  version: "${env.BUILD_ID}",
+                  repository: "${NEXUS_REPOSITORY}",
+                  credentialsId: "${NEXUS_CREDENTIAL_ID}",
+                  artifacts: [
+                    [artifactId: 'myArtifact',
+                     classifier: '',
+                     file: 'target/vprofile-v2.war',
+                     type: 'war']
+                  ]
+                )
+            }
+        }
     }
 }
