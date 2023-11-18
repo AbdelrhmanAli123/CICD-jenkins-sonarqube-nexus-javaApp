@@ -70,9 +70,12 @@ pipeline{
 	    
 	stage('CODE ANALYSIS with SONARQUBE') {
 		steps{	
+			script{
+				
 			withSonarQubeEnv(credentialsId: 'sonarserver'){
 				sh 'mvn -s settings.xml sonar:sonar'
-			} 
+			}
+		     } 
 			
 		}
 	}
