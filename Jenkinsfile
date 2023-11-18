@@ -1,9 +1,9 @@
 pipeline{
     agent any
-    // tools {
-    //     maven "MAVEN"
-    //     jdk "JAVA_HOME"
-    // }
+    tools {
+        maven "MAVEN"
+        jdk "JAVA_HOME"
+    }
     environment{
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
@@ -17,8 +17,8 @@ pipeline{
         NEXUS_CREDENTIAL_ID = "nexus"
         NEXUS_GRP_REPO = "vpro-maven-group"
         ARTVERSION = "${env.BUILD_ID}"
-        SONARSCCANER = "sonarserver"
-	SONARSERVER = "sonarserver"
+ //        SONARSCCANER = "sonarserver"
+	// SONARSERVER = "sonarserver"
 
     }
     stages{
@@ -50,7 +50,7 @@ pipeline{
           }
 
           steps {
-            withSonarQubeEnv("sonarserver") {
+            withSonarQubeEnv("sonarqube") {
                sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=my-project \
                    -Dsonar.projectName=my-project \
                    -Dsonar.projectVersion=1.0 \
