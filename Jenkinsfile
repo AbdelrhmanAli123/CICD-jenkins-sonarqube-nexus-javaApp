@@ -44,24 +44,19 @@ pipeline{
                 sh 'mvn -s settings.xml test  '
             }
         }
-         stage('CODE ANALYSIS with SONARQUBE') {
+        stage('CODE ANALYSIS with SONARQUBE') {
+		  stage('SonarQube analysis') {
+		    def scannerHome = tool 'sonarserver';
+		    withSonarQubeEnv('sonarserver') {
+		      sh "${scannerHome}/bin/sonar-scanner \
+		      -D sonar.login=admin \
+		      -D sonar.password=admin \
+		      -D sonar.projectKey=sonarqubetest \
+		      -D sonar.exclusions=vendor/**,resources/**,**/*.java \
+		      -D sonar.host.url=http://3.80.146.132
+		 
           
-		  // environment {
-    //          scannerHome = tool 'sonarscanner4'
-    //       }
-
-          steps {
-            withSonarQubeEnv('scanrr') {
-               sh '''${SONARSCCANER}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
-                   -Dsonar.projectName=vprofile-repo \
-                   -Dsonar.projectVersion=1.0 \
-                   -Dsonar.sources=src/ \
-                   -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
-                   -Dsonar.junit.reportsPath=target/surefire-reports/ \
-                   -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                   -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
-             }
-           }
+    	     }
          }
     }
 }
