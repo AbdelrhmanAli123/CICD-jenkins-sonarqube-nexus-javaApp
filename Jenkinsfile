@@ -43,29 +43,38 @@ pipeline{
                 sh 'mvn -s settings.xml test  '
             }
         }
-        stage('CODE ANALYSIS with SONARQUBE') {
+    //     stage('CODE ANALYSIS with SONARQUBE') {
           
-		  environment {
-             scannerHome = tool 'sonarserver'
-          }
+		  // environment {
+    //          scannerHome = tool 'sonarserver'
+    //       }
 
-          steps {
-            withSonarQubeEnv("sonarserver") {
-               sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=my-project \
-                   -Dsonar.projectName=my-project \
-                   -Dsonar.projectVersion=1.0 \
-                   -Dsonar.sources=src/ \
-                   -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
-                   -Dsonar.junit.reportsPath=target/surefire-reports/ \
-                   -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                   -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml
-		   - Dsonar.host.url=http://3.80.146.132:9000'''
-            }
+    //  //      steps {
+    //  //        withSonarQubeEnv("sonarserver") {
+    //  //           sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=my-project \
+    //  //               -Dsonar.projectName=my-project \
+    //  //               -Dsonar.projectVersion=1.0 \
+    //  //               -Dsonar.sources=src/ \
+    //  //               -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
+    //  //               -Dsonar.junit.reportsPath=target/surefire-reports/ \
+    //  //               -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+    //  //               -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml
+		  //  // - Dsonar.host.url=http://3.80.146.132:9000'''
+    //  //        }
 
-            timeout(time: 10, unit: 'MINUTES') {
-               waitForQualityGate abortPipeline: true
-            }
-          }
-        }
+     //        timeout(time: 10, unit: 'MINUTES') {
+     //           waitForQualityGate abortPipeline: true
+     //        }
+     //      }
+     //    }
+	    
+	stage('CODE ANALYSIS with SONARQUBE') {
+		steps{	
+			withSonarQubeEnv(credentialsID: 'sonarserver'){
+				sh 'mvn sonar:sonar'
+			} 
+			
+		}
+	}
     }
 }
