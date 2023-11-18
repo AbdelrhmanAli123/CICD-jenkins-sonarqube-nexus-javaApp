@@ -44,5 +44,29 @@ pipeline{
                 sh 'mvn -s settings.xml test  '
             }
         }
+        stage('SonarQube analysis using maven'){
+            steps{
+                withSonarQubeEnv('sonar'){ 
+                    
+                    sh 'mvn sonar:sonar'
+                } 
+            }
+        }
+        
+        // stage('SonarQube analysis nativly'){
+        //     withSonarQubeEnv('sonar') {
+        //        sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
+        //            -Dsonar.projectName=vprofile-repo \
+        //            -Dsonar.projectVersion=1.0 \
+        //            -Dsonar.sources=src/ \
+        //            -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
+        //            -Dsonar.junit.reportsPath=target/surefire-reports/ \
+        //            -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+        //            -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
+        //     }
+
+
+
+        // }
     }
 }
