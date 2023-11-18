@@ -72,7 +72,7 @@ pipeline{
 		steps{	
 			script{
 				
-			withSonarQubeEnv('sonarserver'){
+		withSonarQubeEnv(credentialsId: 'sonar-tokan') {
 				sh 'mvn  -s settings.xml sonar:sonar'
 			}
 		     } 
