@@ -43,10 +43,13 @@ pipeline{
                 sh 'mvn -s settings.xml test  '
             }
         }
-        // stage('SonarQube analysis'){
-        //     stages{
+        stage('SonarQube analysis'){
+            stages{ 
+                withSonarQubeEnv(credentiallsId: 'sonarr'){
+                    sh "mvn sonar:sonar"
+                }
 
-        //     }
-        // }
+            }
+        }
     }
 }
