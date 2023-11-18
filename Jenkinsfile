@@ -16,6 +16,8 @@ pipeline{
     	NEXUS_REPOGRP_ID    = "vprofile-grp-repo"
         NEXUS_CREDENTIAL_ID = "nexus"
         NEXUS_GRP_REPO = "vpro-maven-group"
+        SONARSERVER = 'my_sonarqube'
+        SONARSCANNER = 'my_sonarqube'
         ARTVERSION = "${env.BUILD_ID}"
 
 
@@ -55,7 +57,7 @@ pipeline{
 
         stage('SonarQube analysis nativly'){
             withSonarQubeEnv('my_sonarqube') {
-               sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=sonar-project \
+               sh '''${SONARSCANNER}/bin/sonar-scanner -Dsonar.projectKey=sonar-project \
                    -Dsonar.projectName=sonar-project \
                    -Dsonar.projectVersion=1.0 \
                    -Dsonar.sources=src/ \
