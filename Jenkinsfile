@@ -44,19 +44,5 @@ pipeline{
                 sh 'mvn -s settings.xml test  '
             }
         }
-        stage('CODE ANALYSIS with SONARQUBE') {
-		  stage('SonarQube analysis') {
-		    def scannerHome = tool 'sonarserver';
-		    withSonarQubeEnv('sonarserver') {
-		      sh "${scannerHome}/bin/sonar-scanner \
-		      -D sonar.login=admin \
-		      -D sonar.password=admin \
-		      -D sonar.projectKey=sonarqubetest \
-		      -D sonar.exclusions=vendor/**,resources/**,**/*.java \
-		      -D sonar.host.url="3.80.146.132"
-		 
-          
-    	     }
-         }
     }
 }
