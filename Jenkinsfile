@@ -87,24 +87,24 @@ pipeline{
                 }
             }
         }   
-	stage("Upload Artifact to Nexus"){
-            steps{
-                nexusArtifactUploader(
-                  nexusVersion: 'nexus3',
-                  protocol: 'http',
-                  nexusUrl: "${NEXUSIP}:${NEXUSPORT}",
-                  groupId: 'QA',
-                  version: "${env.BUILD_ID}",
-                  repository: "${NEXUS_REPOSITORY}",
-                  credentialsId: "${NEXUS_CREDENTIAL_ID}",
-                  artifacts: [
-                    [artifactId: 'myArtifact',
-                     classifier: '',
-                     file: 'target/vprofile-v2.war',
-                     type: 'war']
-                  ]
-                )
-            }
-        }
+	// stage("Upload Artifact to Nexus"){
+    //         steps{
+    //             nexusArtifactUploader(
+    //               nexusVersion: 'nexus3',
+    //               protocol: 'http',
+    //               nexusUrl: "${NEXUSIP}:${NEXUSPORT}",
+    //               groupId: 'QA',
+    //               version: "${env.BUILD_ID}",
+    //               repository: "${NEXUS_REPOSITORY}",
+    //               credentialsId: "${NEXUS_CREDENTIAL_ID}",
+    //               artifacts: [
+    //                 [artifactId: 'myArtifact',
+    //                  classifier: '',
+    //                  file: 'target/vprofile-v2.war',
+    //                  type: 'war']
+    //               ]
+    //             )
+    //         }
+    //     }
     }
 }
