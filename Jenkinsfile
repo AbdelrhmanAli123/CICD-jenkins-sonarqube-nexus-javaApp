@@ -107,4 +107,16 @@ pipeline{
             }
         }
     }
+	def COLOR_MAP=[
+		'SUCCESS':'good',
+		'FAILURE':'danger'
+	]
+	post {
+        always {
+            echo 'Slack Notifications.'
+            slackSend channel: '#devops-pipline-notification',
+                color: COLOR_MAP[currentBuild.currentResult],
+                message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
+        }
+    }
 }
