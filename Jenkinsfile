@@ -110,7 +110,70 @@ pipeline{
                 )
             }
         }
-    }
+	stage("push the imaegs to ecr"){
+		 steps{
+			 script{
+
+				 sh """
+				# Step 1: Authenticate Docker with Amazon ECR in the us-east-1 region
+				aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 347735122858.dkr.ecr.us-east-1.amazonaws.com
+				
+				# Step 2: Build the Docker image for the 'app' service with the specified build number
+				docker build -t app:${BUILD_NUMBER} ./app/.
+				
+				# Step 3: Build the Docker image for the 'web' service with the specified build number
+				docker build -t web:${BUILD_NUMBER} ./wep/.
+				
+				# Step 4: Build the Docker image for the 'db' service with the specified build number
+				docker build -t db:${BUILD_NUMBER}  ./db/.
+				
+				# Step 5: Tag the 'app' Docker image with the ECR repository and build number
+				docker tag app:${BUILD_NUMBER} 347735122858.dkr.ecr.us-east-1.amazonaws.com/cicd-repo:app{BUILD_NUMBER}
+				
+				# Step 6: Tag the 'web' Docker image with the ECR repository and build number
+				docker tag web:${BUILD_NUMBER} 347735122858.dkr.ecr.us-east-1.amazonaws.com/cicd-repo:web{BUILD_NUMBER}
+				
+				# Step 7: Tag the 'db' Docker image with the ECR repository and build number
+				docker tag db:${BUILD_NUMBER} 347735122858.dkr.ecr.us-east-1.amazonaws.com/cicd-repo:db{BUILD_NUMBER}
+         			# Push the app image
+				docker push 347735122858.dkr.ecr.us-east-1.amazonaws.com/cicd-repo:app{BUILD_NUMBER}
+				
+				# Push the web image
+				docker push 347735122858.dkr.ecr.us-east-1.amazonaws.com/cicd-repo:web{BUILD_NUMBER}
+				
+				# Push the db image
+				docker push 347735122858.dkr.ecr.us-east-1.amazonaws.com/cicd-repo:db{BUILD_NUMBER}
+
+			 """
+			 }
+		 }   
+	    }
+	    stage("Deploy to ECS") {
+		    steps {
+		        script {
+		            // ECS Cluster and Service configuration
+		            def ecsCluster = "your-ecs-cluster-name"
+		            def appServiceName = "app-service"  // Update with your ECS service name for the 'app' service
+		            def webServiceName = "web-service"  // Update with your ECS service name for the 'web' service
+		            def dbServiceName = "db-service"    // Update with your ECS service name for the 'db' service
+		
+		            // ECS Task Definitions
+		            def appTaskDefinition = "app-task"  // Update with your ECS task definition for the 'app' service
+		            def webTaskDefinition = "web-task"  // Update with your ECS task definition for the 'web' service
+		            def dbTaskDefinition = "db-task"    // Update with your ECS task definition for the 'db' service
+		
+		            // ECS Service Update for 'app' service
+		            sh "aws ecs update-service --cluster ${ecsCluster} --service ${appServiceName} --task-definition ${appTaskDefinition}:${BUILD_NUMBER}"
+		
+		            // ECS Service Update for 'web' service
+		            sh "aws ecs update-service --cluster ${ecsCluster} --service ${webServiceName} --task-definition ${webTaskDefinition}:${BUILD_NUMBER}"
+		
+		            // ECS Service Update for 'db' service
+		            sh "aws ecs update-service --cluster ${ecsCluster} --service ${dbServiceName} --task-definition ${dbTaskDefinition}:${BUILD_NUMBER}"
+		        }
+		    }
+		}
+       }
 	post {
         always {
             echo 'Slack Notifications.'
