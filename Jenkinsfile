@@ -163,13 +163,13 @@ pipeline{
 		            def dbTaskDefinition = "db-task"    // Update with your ECS task definition for the 'db' service
 		
 		            // ECS Service Update for 'app' service
-		            sh "aws ecs update-service --cluster ${ecsCluster} --service ${appServiceName} --task-definition ${appTaskDefinition}:${BUILD_NUMBER}"
+		            sh "aws ecs update-service --cluster ${ecsCluster} --region us-east-1 --service ${appServiceName} --task-definition ${appTaskDefinition}:${BUILD_NUMBER}"
 		
 		            // ECS Service Update for 'web' service
-		            sh "aws ecs update-service --cluster ${ecsCluster} --service ${webServiceName} --task-definition ${webTaskDefinition}:${BUILD_NUMBER}"
+		            sh "aws ecs update-service --cluster ${ecsCluster}  --region us-east-1 --service ${webServiceName} --task-definition ${webTaskDefinition}:${BUILD_NUMBER}"
 		
 		            // ECS Service Update for 'db' service
-		            sh "aws ecs update-service --cluster ${ecsCluster} --service ${dbServiceName} --task-definition ${dbTaskDefinition}:${BUILD_NUMBER}"
+		            sh "aws ecs update-service --cluster ${ecsCluster} --region us-east-1 --service ${dbServiceName} --task-definition ${dbTaskDefinition}:${BUILD_NUMBER}"
 		        }
 		    }
 		}
