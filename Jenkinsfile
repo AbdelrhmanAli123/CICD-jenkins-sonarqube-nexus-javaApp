@@ -136,13 +136,13 @@ pipeline{
 				# Step 7: Tag the 'db' Docker image with the ECR repository and build number
 				docker tag db:${BUILD_NUMBER} 347735122858.dkr.ecr.us-east-1.amazonaws.com/cicd-repo:db${BUILD_NUMBER}
          			# Push the app image
-				docker push 347735122858.dkr.ecr.us-east-1.amazonaws.com/cicd-repo:app{BUILD_NUMBER}
+				docker push 347735122858.dkr.ecr.us-east-1.amazonaws.com/cicd-repo:app${BUILD_NUMBER}
 				
 				# Push the web image
-				docker push 347735122858.dkr.ecr.us-east-1.amazonaws.com/cicd-repo:web{BUILD_NUMBER}
+				docker push 347735122858.dkr.ecr.us-east-1.amazonaws.com/cicd-repo:web${BUILD_NUMBER}
 				
 				# Push the db image
-				docker push 347735122858.dkr.ecr.us-east-1.amazonaws.com/cicd-repo:db{BUILD_NUMBER}
+				docker push 347735122858.dkr.ecr.us-east-1.amazonaws.com/cicd-repo:db${BUILD_NUMBER}
 
 			 """
 			 }
