@@ -122,7 +122,7 @@ pipeline{
 				docker build -t app:${BUILD_NUMBER} ./app/.
 				
 				# Step 3: Build the Docker image for the 'web' service with the specified build number
-				docker build -t web:${BUILD_NUMBER} ./wep/.
+				docker build -t web:${BUILD_NUMBER} ./web/.
 				
 				# Step 4: Build the Docker image for the 'db' service with the specified build number
 				docker build -t db:${BUILD_NUMBER}  ./db/.
