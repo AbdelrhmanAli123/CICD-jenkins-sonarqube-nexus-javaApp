@@ -153,24 +153,13 @@ pipeline{
 		        script {
 		            // ECS Cluster and Service configuration
 		            def ecsCluster = "cicd-cluster1"
-		            def appServiceName = "cicd-service"  // Update with your ECS service name for the 'app' service
-		            // def webServiceName = "web-service"  // Update with your ECS service name for the 'web' service
-		            // def dbServiceName = "db-service"    // Update with your ECS service name for the 'db' service
+		            def appServiceName = "cicd-service"  
 		
 		            // ECS Task Definitions
-		            def appTaskDefinition = "cicd-task"  // Update with your ECS task definition for the 'app' service
-		            // def webTaskDefinition = "web-task"  // Update with your ECS task definition for the 'web' service
-		            // def dbTaskDefinition = "db-task"    // Update with your ECS task definition for the 'db' service
+		            def appTaskDefinition = "cicd-task"  
 		
-		            // ECS Service Update for 'app' service
-		            sh "aws ecs update-service --cluster ${ecsCluster} --region us-east-1 --service ${appServiceName} --task-definition ${appTaskDefinition}:${BUILD_NUMBER}"
+		            sh "aws ecs update-service --cluster ${ecsCluster} --region us-east-1 --service ${appServiceName} --task-definition ${appTaskDefinition}:${BUILD_NUMBER} --force-new-deployment"
 		
-		            // ECS Service Update for 'web' service
-		            // sh "aws ecs update-service --cluster ${ecsCluster}  --region us-east-1 --service ${webServiceName} --task-definition ${webTaskDefinition}:${BUILD_NUMBER}"
-		
-		            // // ECS Service Update for 'db' service
-		            // sh "aws ecs update-service --cluster ${ecsCluster} --region us-east-1 --service ${dbServiceName} --task-definition ${dbTaskDefinition}:${BUILD_NUMBER}"
-		        }
 		    }
 		}
        }
