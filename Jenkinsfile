@@ -158,7 +158,7 @@ pipeline{
 		            // ECS Task Definitions
 		            def appTaskDefinition = "cicd-task"  
 		
-		            sh "aws ecs update-service --cluster ${ecsCluster} --region us-east-1 --service ${appServiceName} --task-definition ${appTaskDefinition}:${BUILD_NUMBER} --force-new-deployment"
+		            sh "aws ecs update-service --cluster ${ecsCluster} --region us-east-1 --service ${appServiceName}  --force-new-deployment"
 		
 		    }
 		}
