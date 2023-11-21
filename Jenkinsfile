@@ -56,7 +56,9 @@ pipeline{
 			
 		}
 	}
-    //                  ----------Other way to use sonarqube-------------
+
+    //               -------------Other way to use sonarqube-------------
+
     //     stage('CODE ANALYSIS with SONARQUBE') {
           
 		  // environment {
@@ -81,7 +83,9 @@ pipeline{
      //        }
      //      }
      //    }
+     //       ------------------------------------------------
 	    
+
 	stage("Quality Gate") {
             steps {
                 timeout(time: 1, unit: 'HOURS') {
@@ -90,7 +94,8 @@ pipeline{
                     waitForQualityGate abortPipeline: true
                 }
             }
-        }   
+        }  
+
 	stage("Upload Artifact to Nexus"){
             steps{
                 nexusArtifactUploader(
@@ -110,7 +115,8 @@ pipeline{
                 )
             }
         }
-	stage("push the imaegs to ecr"){
+
+	stage("build and push the imaegs to ecr"){
 		 steps{
 			 script{
 
@@ -119,13 +125,13 @@ pipeline{
 				aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 347735122858.dkr.ecr.us-east-1.amazonaws.com
 				
 				# Step 2: Build the Docker image for the 'app' service with the specified build number
-				docker build -t app:${BUILD_NUMBER} ./app/.
+				docker build -t app:${BUILD_NUMBER} ./app_dockerfile/.
 				
 				# Step 3: Build the Docker image for the 'web' service with the specified build number
-				docker build -t web:${BUILD_NUMBER} ./web/.
+				docker build -t web:${BUILD_NUMBER} ./web_dockerfile/.
 				
 				# Step 4: Build the Docker image for the 'db' service with the specified build number
-				docker build -t db:${BUILD_NUMBER}  ./db/.
+				docker build -t db:${BUILD_NUMBER}  ./db_dockerfile/.
 				
 				# Step 5: Tag the 'app' Docker image with the ECR repository and build number
 				docker tag app:${BUILD_NUMBER} 347735122858.dkr.ecr.us-east-1.amazonaws.com/cicd-repo:app${BUILD_NUMBER}
@@ -146,8 +152,9 @@ pipeline{
 
 			 """
 			 }
-		 }   
+		  }   
 	    }
+
 	    stage("Deploy to ECS") {
 		    steps {
 		        script {
@@ -161,7 +168,7 @@ pipeline{
 		            sh "aws ecs update-service --cluster ${ecsCluster} --region us-east-1 --service ${appServiceName}  --force-new-deployment"
 		
 		    }
-		}
+		 }
 	    }
        }
 	post {
